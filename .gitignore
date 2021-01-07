@@ -1,5 +1,6 @@
 db.sqlite3
 .venv
+/static
 local.py
 settings_local.py
 __pycache__
