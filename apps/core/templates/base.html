@@ -1,0 +1,23 @@
+{% load static %}
+<html>
+    <head>
+        <title>Wallet Monitor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'Skeleton/css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'Skeleton/css/skeleton.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/topnav.css' %}">
+        <link rel="stylesheet" href="{% static 'css/accordion.css' %}">
+    </head>
+    <body>
+        {% if user.is_authenticated %}
+        <nav class="topnav">
+            <a href="/monitor">Monitor</a>
+            <a href="/transactions/show">Transactions</a>
+            <a class="right" href="/accounts/logout/">Logout</a>
+        </nav>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

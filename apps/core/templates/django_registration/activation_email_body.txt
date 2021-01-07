@@ -1,0 +1,18 @@
+Hello {{ user.username }},
+
+you have registered at {{ site }}
+
+If this was not you, please ignore this email!
+
+If you want to activate your account at https://{{ site }}, please click on this link:
+
+{% autoescape off %}
+Please click on the link to confirm your registration, https://{{ site }}{% url 'django_registration_activate' activation_key=activation_key %}
+{% endautoescape %}
+
+All the best!
+
+The team at {{ site }}
+
+PS: this is an automated E-Mail, please do not reply.
+You can contact us at info@{{ site }}

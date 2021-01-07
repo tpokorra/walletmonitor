@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="form-box">
+<center><a href="/transactions/add" class="button button-primary">Add New Record</a></center>
+<br/>
+<table class="table table-striped table-bordered table-sm">
+	<thead class="thead-dark">
+	<tr>
+		<th>Date</th>
+		<th>Amount</th>
+		<th>Value</th>
+		<th colspan="2">Rate</th>
+		<th>Actions</th>
+	</tr>
+	</thead>
+	<tbody>
+{% for transaction in transactions %}
+	<tr>
+		<td>{{ transaction.date_valid }}</td>
+		<td>{{ transaction.amount_before_fee|floatformat:3 }} {{ transaction.crypto_currency }}</td>
+		<td>{{ transaction.amount|floatformat:2 }} {{ transaction.fiat_currency }}</td>
+		<td>{% if transaction.amount < 0 %}
+			{{ transaction.exchange_rate|floatformat:0 }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
+			{% endif %}
+		</td>
+		<td>{% if transaction.amount > 0 %}
+			{{ transaction.exchange_rate|floatformat:0 }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
+			{% endif %}
+		</td>
+		<td>
+			<a href="/transactions/edit/{{ transaction.id }}"><span class="glyphicon glyphicon-pencil" >Edit</span></a>
+			<a href="/transactions/delete/{{ transaction.id }}" onclick="return confirm('Are you sure?')">Delete</a>
+		</td>
+	</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}
