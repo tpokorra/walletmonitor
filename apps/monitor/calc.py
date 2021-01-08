@@ -10,7 +10,7 @@ class Calc:
         sql = """SELECT rate, datetime_valid FROM exchangerate WHERE crypto_currency = %s AND fiat_currency = %s
            AND datetime_valid BETWEEN %s AND %s
            ORDER BY datetime_valid DESC"""
-        startDate = datetime.datetime.now() - datetime.timedelta(days=int(DayDiff))
+        startDate = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=int(DayDiff))
         endDate = startDate + datetime.timedelta(days=1)
         cursor.execute(sql, [Crypto, Fiat, startDate, endDate])
         rateMinusXDay = cursor.fetchone()
