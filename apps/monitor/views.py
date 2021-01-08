@@ -7,7 +7,7 @@ from apps.monitor.calc import Calc
 @login_required
 def monitor(request):
     transactions = Transaction.objects.filter(owner=request.user)
-    crypto_currencies = {tr.crypto_currency for tr in transactions}
+    crypto_currencies = sorted({tr.crypto_currency for tr in transactions})
     cryptos = []
     total_investment = 0
     current_value = 0
