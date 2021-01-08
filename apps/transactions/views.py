@@ -31,7 +31,8 @@ def show(request):
 @login_required
 def edit(request, id):
     transaction = Transaction.objects.get(id=id, owner=request.user)
-    return render(request,'edit.html', {'transaction':transaction})
+    form = TransactionForm(request.POST or None, instance = transaction)
+    return render(request,'edit.html', {'transaction':transaction, 'form': form})
 
 @login_required
 def update(request, id):
