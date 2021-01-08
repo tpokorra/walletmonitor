@@ -59,6 +59,15 @@
   </div>
 
 {% endfor %}
+
+<br/><br/><br/>
+
+<h3>Total wallet</h3>
+
+Total investment: {{total_investment|floatformat:2}} EUR<br/>
+Virtual value of wallet: {{current_value|floatformat:2}} EUR<br/>
+Total tax free: {{total_tax_free|floatformat:2}} EUR<br/>
+
   
 </div>
 {% endblock %}

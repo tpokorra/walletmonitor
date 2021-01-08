@@ -19,4 +19,4 @@ def monitor(request):
 
         cryptos.append({"crypto": crypto, "rateEUR": rateEUR, "rateUSD": rateUSD, **out2})
 
-    return render(request,"monitor.html",{'cryptos':cryptos})
+    return render(request,"monitor.html",{'cryptos':cryptos, 'total_tax_free': total_tax_free, 'total_investment': total_investment, 'current_value': current_value})
