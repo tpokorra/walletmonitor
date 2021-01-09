@@ -15,6 +15,14 @@
             <a href="/monitor">Monitor</a>
             <a href="/transactions/show">Transactions</a>
             <a class="right" href="/accounts/logout/">Logout</a>
+            <a class="right" href="{{ ABOUT_URL }}" target="_blank">About</a>
+            <a class="right" href="https://github.com/tpokorra/walletmonitor" target="_blank">Fork me</a>
+        </nav>
+        {% else %}
+        <nav class="topnav">
+            <a href="/">Wallet Monitor</a>
+            <a class="right" href="{{ ABOUT_URL }}" target="_blank">About</a>
+            <a class="right" href="https://github.com/tpokorra/walletmonitor" target="_blank">Fork me</a>
         </nav>
         {% endif %}
         {% block content %}
