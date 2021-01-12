@@ -36,12 +36,7 @@
         <tr>
             <td>{{ r.dateRelative }}</td>
             <td>{{ r.date|date:'Y-m-d' }}</td>
-            <td>{{ r.rateEUR|floatformat:0 }} EUR/{{ c.crypto }}
-              {% if r.rateUSD %}
-                <br/>
-                {{ r.rateUSD|floatformat:0 }} USD/{{ c.crypto }}
-              {% endif %}
-            </td>
+            <td>{{ r.rateEUR|floatformat:0 }} EUR/{{ c.crypto }}</td>
             <td>{% if r.diffPercentage %}
                 {{ r.diffPercentage|floatformat:1 }}%
                 {% endif %}
