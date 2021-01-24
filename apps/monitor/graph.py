@@ -15,7 +15,7 @@ class Graph:
         y = []
 
         with connection.cursor() as cursor:
-            sql = """SELECT date(datetime_valid), rate FROM 
+            sql = """SELECT datetime_valid, rate FROM
                      (select date(datetime_valid) as day, max(datetime_valid) as last
                         from exchangerate WHERE crypto_currency = %s AND fiat_currency = %s
                         AND datetime_valid >= %s
@@ -28,7 +28,7 @@ class Graph:
             cursor.execute(sql, [Crypto, Fiat, startDate, Crypto, Fiat])
             rows = cursor.fetchall()
             for row in rows:
-                x.append(datetime.datetime.strptime(row[0], '%Y-%m-%d'))
+                x.append(row[0])
                 y.append(row[1])
 
         if len(x) == 0:
@@ -46,7 +46,7 @@ class Graph:
                  marker='o', markerfacecolor='blue', markersize=2)
 
         loc = plticker.MultipleLocator(base=(len(x)/4.0))
-        ax.xaxis.set_major_locator(loc)
+        #ax.xaxis.set_major_locator(loc)
 
         ax.set_xlabel("time")
         ax.set_ylabel(Fiat)
@@ -84,7 +84,7 @@ class Graph:
                  marker='o', markerfacecolor='blue', markersize=2)
 
         loc = plticker.MultipleLocator(base=(len(x)/5.0))
-        ax.xaxis.set_major_locator(loc)
+        #ax.xaxis.set_major_locator(loc)
 
         ax.set_xlabel("time")
         ax.set_ylabel(Fiat)
