@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from apps.transactions.models import Transaction
 from apps.rates.models import ExchangeRate
 from apps.monitor.calc import Calc
+from apps.monitor.graph import Graph
 
 @login_required
 def monitor(request):
@@ -20,3 +21,17 @@ def monitor(request):
         cryptos.append({"crypto": crypto, "rateEUR": rateEUR, "rateUSD": rateUSD, **out2})
 
     return render(request,"monitor.html",{'cryptos':cryptos, 'total_tax_free': total_tax_free, 'total_investment': total_investment, 'current_value': current_value})
+
+@login_required
+def graph(request):
+    if not 'crypto' in request.GET:
+        return
+    if not 'fiat' in request.GET:
+        return
+    Crypto = request.GET['crypto']
+    Fiat = request.GET['fiat']
+
+    if 'number_of_days' in request.GET:
+        return Graph().graph_days(Crypto, Fiat, request.GET['number_of_days'])
+    if 'number_of_hours' in request.GET:
+        return Graph().graph_hours(Crypto, Fiat, request.GET['number_of_hours'])

@@ -27,6 +27,7 @@ urlpatterns = [
 	path('', core_views.home),
 	path('home/', core_views.home),
 	path('monitor/', monitor_views.monitor),
+	path('graph/', monitor_views.graph),
 	path('transactions/add', tr_views.add),
 	path('transactions/show', tr_views.show),
 	path('transactions/edit/<int:id>', tr_views.edit),
