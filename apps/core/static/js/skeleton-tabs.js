@@ -5,10 +5,11 @@
 
         tabButtons.map(function(button) {
             button.addEventListener('click', function() {
-                document.querySelector('li a.active.button').classList.remove('active');
+                active = document.querySelector('li a.active.button')
+                if (active) active.classList.remove('active');
                 button.classList.add('active');
-
-                document.querySelector('.tab-pane.active').classList.remove('active');
+                active = document.querySelector('.tab-pane.active')
+                if (active) active.classList.remove('active');
                 document.querySelector(button.getAttribute('href')).classList.add('active');
             })
         })
