@@ -97,34 +97,16 @@
               </table>
 
           </div>
-          <div class="tab-pane active" id="h48{{ c.crypto }}">
-              <h4>48 hours</h4>
-              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_hours=48" loading="lazy">
+          {% for g in c.graphs %}
+          <div class="tab-pane {{g.active}}" id="{{ g.id }}{{ c.crypto }}">
+              <h4>{{ g.label }}</h4>
+              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&{{g.period}}" loading="lazy"><br/>
+              Start: {{ g.startdate }} {{ g.startvalue|floatformat:2 }} EUR<br/>
+              Min: {{ g.mindate }} {{ g.minvalue|floatformat:2 }} EUR<br/>
+              Max: {{ g.maxdate }} {{ g.maxvalue|floatformat:2 }} EUR<br/>
+              Now: {{ g.curdate }} {{ g.curvalue|floatformat:2 }} EUR<br/>
           </div>
-          <div class="tab-pane" id="d3{{ c.crypto }}">
-              <h4>3 days</h4>
-              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_hours=72" loading="lazy">
-          </div>
-          <div class="tab-pane" id="w1{{ c.crypto }}">
-              <h4>1 week</h4>
-              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_hours=168" loading="lazy">
-          </div>
-          <div class="tab-pane" id="m1{{ c.crypto }}">
-              <h4>1 month</h4>
-              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=30" loading="lazy">
-          </div>
-          <div class="tab-pane" id="m6{{ c.crypto }}">
-              <h4>6 months</h4>
-              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=180" loading="lazy">
-          </div>
-          <div class="tab-pane" id="y1{{ c.crypto }}">
-              <h4>1 year</h4>
-              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=360" loading="lazy">
-          </div>
-          <div class="tab-pane" id="y10{{ c.crypto }}">
-              <h4>10 years</h4>
-              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=3600" loading="lazy">
-          </div>
+          {% endfor %}
       </div>
     {% endif %}
 

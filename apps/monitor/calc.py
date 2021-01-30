@@ -19,6 +19,43 @@ class Calc:
                 "diffPercentage": (CurrentRate.rate-Decimal(rateMinusXDay[0]))/Decimal(rateMinusXDay[0])*100, "rateUSD": None}
     return None
 
+  def CalcHistory(self, Hours, Crypto, Fiat):
+    with connection.cursor() as cursor:
+        startDate = datetime.datetime.today() - datetime.timedelta(hours=Hours)
+        endDate = datetime.datetime.today()
+        sql = """SELECT datetime_valid, rate FROM exchangerate
+                  WHERE crypto_currency = %s AND fiat_currency = %s
+                  AND datetime_valid BETWEEN %s AND %s
+                  ORDER BY datetime_valid ASC LIMIT 1"""
+        cursor.execute(sql, [Crypto, Fiat, startDate, endDate])
+        startRate = cursor.fetchone()
+        if not startRate:
+            return {}
+        sql = """SELECT datetime_valid, rate FROM exchangerate
+                  WHERE crypto_currency = %s AND fiat_currency = %s
+                  AND datetime_valid BETWEEN %s AND %s
+                  ORDER BY datetime_valid DESC LIMIT 1"""
+        cursor.execute(sql, [Crypto, Fiat, startDate, endDate])
+        endRate = cursor.fetchone()
+        sql = """SELECT datetime_valid, rate FROM exchangerate
+                  WHERE crypto_currency = %s AND fiat_currency = %s
+                  AND datetime_valid BETWEEN %s AND %s
+                  ORDER BY rate DESC LIMIT 1"""
+        cursor.execute(sql, [Crypto, Fiat, startDate, endDate])
+        maxRate = cursor.fetchone()
+        sql = """SELECT datetime_valid, rate FROM exchangerate
+                  WHERE crypto_currency = %s AND fiat_currency = %s
+                  AND datetime_valid BETWEEN %s AND %s
+                  ORDER BY rate ASC LIMIT 1"""
+        cursor.execute(sql, [Crypto, Fiat, startDate, endDate])
+        minRate = cursor.fetchone()
+        return {"startdate": startRate[0], "startvalue": startRate[1],
+                "curdate": endRate[0], "curvalue": endRate[1],
+                "mindate": minRate[0], "minvalue": minRate[1],
+                "maxdate": maxRate[0], "maxvalue": maxRate[1]}
+    return None
+
+
   def GetCurrentValue(self, userid, crypto, total_investment, current_value, total_tax_free):
     amount_kept = 0
     out = {}
@@ -69,6 +106,15 @@ class Calc:
         diffrate = self.ShowDiffRate(daydiff, rateEUR, crypto, 'EUR')
         if diffrate:
           out["rates"].append(diffrate)
+
+    out["graphs"] = []
+    out["graphs"].append({"id": "h48", "active": "active", "label": "48 hours", "period": "number_of_hours=48", **self.CalcHistory(24*2, crypto, 'EUR')})
+    out["graphs"].append({"id": "d3", "label": "3 days", "period": "number_of_hours=72", **self.CalcHistory(24*3, crypto, 'EUR')})
+    out["graphs"].append({"id": "w1", "label": "1 week", "period": "number_of_hours=168", **self.CalcHistory(24*7, crypto, 'EUR')})
+    out["graphs"].append({"id": "m1", "label": "1 month", "period": "number_of_days=30", **self.CalcHistory(24*30, crypto, 'EUR')})
+    out["graphs"].append({"id": "m6", "label": "6 months", "period": "number_of_days=180", **self.CalcHistory(24*180, crypto, 'EUR')})
+    out["graphs"].append({"id": "y1", "label": "1 year", "period": "number_of_days=360", **self.CalcHistory(24*360, crypto, 'EUR')})
+    out["graphs"].append({"id": "y10", "label": "10 years", "period": "number_of_days=3600", **self.CalcHistory(24*3600, crypto, 'EUR')})
 
     amount_within_past_year = 0
     with connection.cursor() as cursor:
