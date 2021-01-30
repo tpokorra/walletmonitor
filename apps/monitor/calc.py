@@ -52,7 +52,8 @@ class Calc:
         return {"startdate": startRate[0], "startvalue": startRate[1],
                 "curdate": endRate[0], "curvalue": endRate[1],
                 "mindate": minRate[0], "minvalue": minRate[1],
-                "maxdate": maxRate[0], "maxvalue": maxRate[1]}
+                "maxdate": maxRate[0], "maxvalue": maxRate[1],
+                "diffPercentage": (Decimal(endRate[1])-Decimal(startRate[1]))/Decimal(startRate[1])*100}
     return None
 
 

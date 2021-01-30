@@ -101,10 +101,11 @@
           <div class="tab-pane {{g.active}}" id="{{ g.id }}{{ c.crypto }}">
               <h4>{{ g.label }}</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&{{g.period}}" loading="lazy"><br/>
-              Start: {{ g.startdate }} {{ g.startvalue|floatformat:2 }} EUR<br/>
-              Min: {{ g.mindate }} {{ g.minvalue|floatformat:2 }} EUR<br/>
-              Max: {{ g.maxdate }} {{ g.maxvalue|floatformat:2 }} EUR<br/>
-              Now: {{ g.curdate }} {{ g.curvalue|floatformat:2 }} EUR<br/>
+              Start: {{ g.startdate }} {{ g.startvalue|floatformat:0 }} EUR<br/>
+              Min: {{ g.mindate }} {{ g.minvalue|floatformat:0 }} EUR<br/>
+              Max: {{ g.maxdate }} {{ g.maxvalue|floatformat:0 }} EUR<br/>
+              Now: {{ g.curdate }} {{ g.curvalue|floatformat:0 }} EUR<br/>
+              Diff: {{ g.diffPercentage|floatformat:1 }} %<br/>
           </div>
           {% endfor %}
       </div>
