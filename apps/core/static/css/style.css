@@ -11,3 +11,7 @@ input, textarea {
 h3 {
   padding-top: 30px;
 }
+div.tab-pane h4 {
+  font-size: 14px;
+  font-weight: 600;
+}

@@ -5,6 +5,11 @@
   <h2>Monitor</h2>
   <a href="/monitor" class="button button-primary">Refresh</a><br/>
   <p>Hint: these numbers are not very accurate.</p>
+
+  Total investment: {{total_investment|floatformat:2}} EUR<br/>
+  Virtual value of wallet: {{current_value|floatformat:2}} EUR<br/>
+  Total tax free: {{total_tax_free|floatformat:2}} EUR<br/>
+  <br/>
   
 {% for c in cryptos %}
   <input type="checkbox" id="acc{{ c.crypto }}" />
@@ -15,41 +20,16 @@
   </label>
 
   <div class="content">
-    {% if c.bought %}
-    We have bought {{ c.crypto }} for {{ c.bought|floatformat:2 }} EUR<br/>
-    {% endif %}
-    {% if c.sold %}
-    We have sold {{ c.crypto }} for {{ c.sold|floatformat:2 }} EUR<br/>
-    {% endif %}
-    {% if c.amount_kept %}
-    Current value of our {{ c.amount_kept|floatformat:3 }} {{ c.crypto }} is {{ c.current_value|floatformat:2 }} EUR<br/>
-    {% endif %}
-    {% if c.bought_recently %}
-    We have bought within the last 12 months:  {{ c.bought_recently|floatformat:3 }} {{ c.crypto }}<br/>
-    {% endif %}
-    {% if c.bought_tax_free %}
-    We can sell without paying taxes: {{ c.bought_tax_free|floatformat:3 }} {{ c.crypto }} for {{ c.value_tax_free|floatformat:2 }} EUR<br/>
-    {% endif %}
-    <br/><a href="/transactions/show?crypto={{ c.crypto }}">My transactions</a><br/>
-
     {% if c.rates %}
-      <table>
-        {% for r in c.rates %}
-        <tr>
-            <td>{{ r.dateRelative }}</td>
-            <td>{{ r.date|date:'Y-m-d' }}</td>
-            <td>{{ r.rateEUR|floatformat:0 }} EUR/{{ c.crypto }}</td>
-            <td>{% if r.diffPercentage %}
-                {{ r.diffPercentage|floatformat:1 }}%
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-      </table>
-
-      <ul class="tab-nav">
+      <ul class="tab-nav" id="tabnav{{ c.crypto }}">
           <li>
-            <a class="button" href="#h48{{ c.crypto }}">48 hours</a>
+            <a class="button" href="#info{{ c.crypto }}">Info</a>
+          </li>
+          <li>
+            <a class="button" href="#rates{{ c.crypto }}">Rates Text</a>
+          </li>
+          <li>
+            <a class="button active" href="#h48{{ c.crypto }}">48 hours</a>
           </li>
           <li>
             <a class="button" href="#d3{{ c.crypto }}">3 days</a>
@@ -67,50 +47,90 @@
             <a class="button" href="#y1{{ c.crypto }}">1 year</a>
           </li>
       </ul>
-      <div class="tab-content">
-          <div class="tab-pane" id="h48{{ c.crypto }}">
-              48 hours
+      <div class="tab-content" id="tabcontent{{ c.crypto }}">
+
+          <div class="tab-pane" id="Info{{ c.crypto }}">
+              <h4>Info</h4>
+
+              {% if c.bought %}
+              We have bought {{ c.crypto }} for {{ c.bought|floatformat:2 }} EUR<br/>
+              {% endif %}
+              {% if c.sold %}
+              We have sold {{ c.crypto }} for {{ c.sold|floatformat:2 }} EUR<br/>
+              {% endif %}
+              {% if c.amount_kept %}
+              Current value of our {{ c.amount_kept|floatformat:3 }} {{ c.crypto }} is {{ c.current_value|floatformat:2 }} EUR<br/>
+              {% endif %}
+              {% if c.bought_recently %}
+              We have bought within the last 12 months:  {{ c.bought_recently|floatformat:3 }} {{ c.crypto }}<br/>
+              {% endif %}
+              {% if c.bought_tax_free %}
+              We can sell without paying taxes: {{ c.bought_tax_free|floatformat:3 }} {{ c.crypto }} for {{ c.value_tax_free|floatformat:2 }} EUR<br/>
+              {% endif %}
+
+              <br/><a href="/transactions/show?crypto={{ c.crypto }}">My transactions</a><br/>
+
+              <br/>
+              Google: <br/>
+              <a href='https://www.google.com/search?channel=crow2&client=firefox-b-d&q={{ c.crypto }}+in+eur%3D' target='_blank'>{{ c.crypto }} in EUR</a><br/>
+              <a href='https://www.google.com/search?channel=crow2&client=firefox-b-d&q={{ c.crypto }}+in+usd%3D' target='_blank'>{{ c.crypto }} in USD</a><br/>
+          </div>
+
+          <div class="tab-pane" id="Rates{{ c.crypto }}">
+              <h4>Rates</h4>
+
+              <table>
+                {% for r in c.rates %}
+                <tr>
+                    <td>{{ r.dateRelative }}</td>
+                    <td>{{ r.date|date:'Y-m-d' }}</td>
+                    <td>{{ r.rateEUR|floatformat:0 }} EUR/{{ c.crypto }}</td>
+                    <td>{% if r.diffPercentage %}
+                        {{ r.diffPercentage|floatformat:1 }}%
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+              </table>
+
+          </div>
+          <div class="tab-pane active" id="h48{{ c.crypto }}">
+              <h4>48 hours</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_hours=48" loading="lazy">
           </div>
           <div class="tab-pane" id="d3{{ c.crypto }}">
-              3 days
+              <h4>3 days</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_hours=72" loading="lazy">
           </div>
           <div class="tab-pane" id="w1{{ c.crypto }}">
-              1 week
+              <h4>1 week</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_hours=168" loading="lazy">
           </div>
           <div class="tab-pane" id="m1{{ c.crypto }}">
-              1 month
+              <h4>1 month</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=30" loading="lazy">
           </div>
           <div class="tab-pane" id="m6{{ c.crypto }}">
-              6 months
+              <h4>6 months</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=180" loading="lazy">
           </div>
           <div class="tab-pane" id="y1{{ c.crypto }}">
-              1 year
+              <h4>1 year</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=360" loading="lazy">
+          </div>
+          <div class="tab-pane" id="y1{{ c.crypto }}">
+              <h4>10 years</h4>
+              <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=3600" loading="lazy">
           </div>
       </div>
     {% endif %}
 
-    <br/>
-    Google: <br/>
-    <a href='https://www.google.com/search?channel=crow2&client=firefox-b-d&q={{ c.crypto }}+in+eur%3D' target='_blank'>{{ c.crypto }} in EUR</a><br/>
-    <a href='https://www.google.com/search?channel=crow2&client=firefox-b-d&q={{ c.crypto }}+in+usd%3D' target='_blank'>{{ c.crypto }} in USD</a><br/>
   </div>
 
 {% endfor %}
 
 <br/><br/><br/>
 
-<h3>Total wallet</h3>
 
-Total investment: {{total_investment|floatformat:2}} EUR<br/>
-Virtual value of wallet: {{current_value|floatformat:2}} EUR<br/>
-Total tax free: {{total_tax_free|floatformat:2}} EUR<br/>
-
-  
 </div>
 {% endblock %}
