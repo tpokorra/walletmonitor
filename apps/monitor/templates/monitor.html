@@ -46,6 +46,9 @@
           <li>
             <a class="button" href="#y1{{ c.crypto }}">1 year</a>
           </li>
+          <li>
+            <a class="button" href="#y10{{ c.crypto }}">10 years</a>
+          </li>
       </ul>
       <div class="tab-content" id="tabcontent{{ c.crypto }}">
 
@@ -118,7 +121,7 @@
               <h4>1 year</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=360" loading="lazy">
           </div>
-          <div class="tab-pane" id="y1{{ c.crypto }}">
+          <div class="tab-pane" id="y10{{ c.crypto }}">
               <h4>10 years</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&number_of_days=3600" loading="lazy">
           </div>
