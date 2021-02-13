@@ -24,3 +24,13 @@ class TransactionForm(forms.ModelForm):
             'fiat_currency': forms.Select(choices = fiat_currencies),
             'crypto_currency': forms.Select(choices = crypto_currencies),
         }
+
+
+class ImportForm(forms.Form):
+    api_key = forms.CharField(label='API Key', widget=forms.PasswordInput, max_length=100)
+    api_secret = forms.CharField(label='API Secret', widget=forms.PasswordInput, max_length=100)
+    YEAR_CHOICES = []
+    now = datetime.datetime.now()
+    for y in range(2000,now.year+1):
+      YEAR_CHOICES.append(y)
+    start_date = forms.DateField(label='Start Date', widget=forms.SelectDateWidget(years=YEAR_CHOICES), initial=datetime.datetime(year=now.year, month=1, day=1))

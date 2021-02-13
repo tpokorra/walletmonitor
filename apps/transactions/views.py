@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from apps.transactions.forms import TransactionForm
+from apps.transactions.forms import ImportForm
 from apps.transactions.models import Transaction
+from apps.transactions.importbtcde import ImportBtcDe
+import socket
 
 @login_required
 def add(request):
@@ -19,6 +22,23 @@ def add(request):
     else:
         form = TransactionForm()
     return render(request,'add.html',{'form':form})
+
+@login_required
+def importbtcde(request):
+    form = ImportForm()
+    if request.method == "POST":
+         form = ImportForm(request.POST)
+         if form.is_valid():
+#        try:
+            importBtcDe = ImportBtcDe()
+#           importBtcDe.Import(request.POST['api_key'], request.POST['api_secret'], request.POST['start_date'], request.user.id)
+            importBtcDe.Import(form.cleaned_data.get('api_key'), form.cleaned_data.get('api_secret'), form.cleaned_data.get('start_date'), request.user)
+            return redirect('/transactions/show')
+#        except:
+#            pass
+    hostname = socket.gethostname()
+    my_ip = socket.gethostbyname(hostname)
+    return render(request,'import.html',{'form':form, 'my_ip': my_ip})
 
 @login_required
 def show(request):
