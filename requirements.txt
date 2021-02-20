@@ -1,4 +1,5 @@
 django
 django-registration
+pytz
 matplotlib
 btcde

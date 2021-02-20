@@ -4,6 +4,7 @@
 <div class="form-box">
   <h2>Monitor</h2>
   <a href="/monitor" class="button button-primary">Refresh</a><br/>
+  <font size="-1">last update: {{last_updated|date:'Y-m-d H:i:s'}} ({{django_timezone}})</font><br/>
   <p>Hint: these numbers are not very accurate.</p>
 
   Total investment: {{total_investment|floatformat:2}} EUR<br/>
