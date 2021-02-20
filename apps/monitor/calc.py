@@ -59,6 +59,7 @@ class Calc:
 
   def GetCurrentValue(self, userid, crypto, total_investment, current_value, total_tax_free):
     amount_kept = 0
+    last_updated = None
     out = {}
     out["crypto"] = crypto
 
@@ -93,6 +94,7 @@ class Calc:
       out["current_value"] = cv
       out["amount_kept"] = amount_kept
       out["rateEUR"] = rateEUR.rate
+      last_updated = rateEUR.datetime_valid
     else:
       out["current_value"] = None
       out["amount_kept"] = None
@@ -134,4 +136,4 @@ class Calc:
           out["value_tax_free"] = amount_available_to_sell * rateEUR.rate
           total_tax_free += out["value_tax_free"]
 
-    return (total_investment, current_value, total_tax_free, rateEUR.rate, rateUSD.rate, out)
+    return (total_investment, current_value, total_tax_free, rateEUR.rate, rateUSD.rate, last_updated, out)
