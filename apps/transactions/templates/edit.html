@@ -5,6 +5,7 @@
 <form method="POST" class="post-form" action="/transactions/update/{{transaction.id}}">
 		{% csrf_token %}
 	<div class="container">
+	<input type="hidden" name="trade_id" value="{{transaction.trade_id}}">
 <br>
 {% if form.errors %}
 	{% for field in form %}
