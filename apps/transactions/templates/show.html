@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load filter %}
 
 {% block content %}
 <div class="form-box">
@@ -22,13 +23,13 @@
 	<tr>
 		<td>{{ transaction.date_valid }}</td>
 		<td>{{ transaction.amount_before_fee|floatformat:3 }} {{ transaction.crypto_currency }}</td>
-		<td>{{ transaction.amount|floatformat:2 }} {{ transaction.fiat_currency }}</td>
+		<td>{{ transaction.amount|formatcurrency }} {{ transaction.fiat_currency }}</td>
 		<td>{% if transaction.amount < 0 %}
-			{{ transaction.exchange_rate|floatformat:0 }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
+			{{ transaction.exchange_rate|formatcurrency }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
 			{% endif %}
 		</td>
 		<td>{% if transaction.amount > 0 %}
-			{{ transaction.exchange_rate|floatformat:0 }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
+			{{ transaction.exchange_rate|formatcurrency }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
 			{% endif %}
 		</td>
 		<td>
