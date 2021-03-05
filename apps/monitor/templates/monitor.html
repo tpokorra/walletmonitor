@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filter %}
 
 {% block content %}
 <div class="form-box">
@@ -16,8 +17,8 @@
   <input type="checkbox" id="acc{{ c.crypto }}" />
   <label for="acc{{ c.crypto }}">
     {{ c.crypto }}
-    {% if c.rateEUR %}{{c.rateEUR|floatformat:0}} EUR{% endif %}
-    {% if c.rateUSD %}{{c.rateUSD|floatformat:0}} USD{% endif %}
+    {% if c.rateEUR %}{{c.rateEUR|formatcurrency}} EUR{% endif %}
+    {% if c.rateUSD %}{{c.rateUSD|formatcurrency}} USD{% endif %}
   </label>
 
   <div class="content">
@@ -88,7 +89,7 @@
                 <tr>
                     <td>{{ r.dateRelative }}</td>
                     <td>{{ r.date|date:'Y-m-d' }}</td>
-                    <td>{{ r.rateEUR|floatformat:0 }} EUR/{{ c.crypto }}</td>
+                    <td>{{ r.rateEUR|formatcurrency }} EUR/{{ c.crypto }}</td>
                     <td>{% if r.diffPercentage %}
                         {{ r.diffPercentage|floatformat:1 }}%
                         {% endif %}
@@ -102,11 +103,11 @@
           <div class="tab-pane {{g.active}}" id="{{ g.id }}{{ c.crypto }}">
               <h4>{{ g.label }}</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&{{g.period}}" loading="lazy"><br/>
-              Start: {{ g.startdate }} {{ g.startvalue|floatformat:0 }} EUR<br/>
-              Now: {{ g.curdate }} {{ g.curvalue|floatformat:0 }} EUR<br/>
+              Start: {{ g.startdate }} {{ g.startvalue|formatcurrency }} EUR<br/>
+              Now: {{ g.curdate }} {{ g.curvalue|formatcurrency }} EUR<br/>
               Diff: {{ g.diffPercentage|floatformat:1 }} %<br/>
-              Min: {{ g.mindate }} {{ g.minvalue|floatformat:0 }} EUR<br/>
-              Max: {{ g.maxdate }} {{ g.maxvalue|floatformat:0 }} EUR<br/>
+              Min: {{ g.mindate }} {{ g.minvalue|formatcurrency }} EUR<br/>
+              Max: {{ g.maxdate }} {{ g.maxvalue|formatcurrency }} EUR<br/>
           </div>
           {% endfor %}
       </div>
