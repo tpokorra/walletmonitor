@@ -85,6 +85,15 @@ class Calc:
         else:
           out["sold"] = None
 
+    # moving coins to other wallet with fees.
+    with connection.cursor() as cursor:
+        sql = """SELECT SUM(amount_after_fee) as after_fee FROM `transaction` WHERE amount_before_fee = 0 and crypto_currency=%s and owner_id=%s"""
+        cursor.execute(sql, [crypto, userid])
+        sold = cursor.fetchone()
+        if sold[0]:
+          # total_investment -= Decimal(sold[1])
+          amount_kept += Decimal(sold[0])
+
     rateEUR = ExchangeRate.objects.filter(crypto_currency=crypto, fiat_currency='EUR').order_by('-datetime_valid').first()
     rateUSD = ExchangeRate.objects.filter(crypto_currency=crypto, fiat_currency='USD').order_by('-datetime_valid').first()
 
