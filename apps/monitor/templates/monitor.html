@@ -64,13 +64,13 @@
               We have sold {{ c.crypto }} for {{ c.sold|floatformat:2 }} EUR<br/>
               {% endif %}
               {% if c.amount_kept %}
-              Current value of our {{ c.amount_kept|floatformat:3 }} {{ c.crypto }} is {{ c.current_value|floatformat:2 }} EUR<br/>
+              Current value of our {{ c.amount_kept|formatcurrency }} {{ c.crypto }} is {{ c.current_value|floatformat:2 }} EUR<br/>
               {% endif %}
               {% if c.bought_recently %}
-              We have bought within the last 12 months:  {{ c.bought_recently|floatformat:3 }} {{ c.crypto }}<br/>
+              We have bought within the last 12 months:  {{ c.bought_recently|formatcurrency }} {{ c.crypto }}<br/>
               {% endif %}
               {% if c.bought_tax_free %}
-              We can sell without paying taxes: {{ c.bought_tax_free|floatformat:3 }} {{ c.crypto }} for {{ c.value_tax_free|floatformat:2 }} EUR<br/>
+              We can sell without paying taxes: {{ c.bought_tax_free|formatcurrency }} {{ c.crypto }} for {{ c.value_tax_free|floatformat:2 }} EUR<br/>
               {% endif %}
 
               <br/><a href="/transactions/show?crypto={{ c.crypto }}">My transactions</a><br/>
