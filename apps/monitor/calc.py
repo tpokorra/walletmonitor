@@ -87,10 +87,10 @@ class Calc:
 
     # calculate all fees.
     with connection.cursor() as cursor:
-        sql = """SELECT SUM(crypto_fee) as crypto_fee, SUM(fiat_fee) as fiat_fee FROM `transaction` WHERE crypto_currency=%s and owner_id=%s"""
+        sql = """SELECT SUM(crypto_fee) as crypto_fee, SUM(fiat_fee) as fiat_fee FROM `transaction` WHERE crypto_currency=%s and owner_id=%s and transaction_type in ('T','B')"""
         cursor.execute(sql, [crypto, userid])
         fees = cursor.fetchone()
-        if sold[0]:
+        if fees[0]:
           total_investment -= Decimal(fees[1])
           amount_kept -= Decimal(fees[0])
 

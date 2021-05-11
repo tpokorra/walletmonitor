@@ -23,11 +23,11 @@
 	<tr>
 		<td>{{ transaction.date_valid }}</td>
 		<td>{{ transaction.crypto_amount|floatformat:3 }}
-			{% if transaction.crypto_fee > 0 %}Fee: {{ transaction.crypto_fee|floatformat:3 }}{% endif %}
+			{% if transaction.crypto_fee and transaction.crypto_fee > 0 %}Fee: {{ transaction.crypto_fee|floatformat:3 }}{% endif %}
 			{{ transaction.crypto_currency }}
 		</td>
 		<td>{{ transaction.fiat_amount|formatcurrency }}
-			{% if transaction.fiat_fee > 0 %}Fee: {{ transaction.fiat_fee|floatformat:2 }}{% endif %}
+			{% if transaction.fiat_fee and transaction.fiat_fee > 0 %}Fee: {{ transaction.fiat_fee|floatformat:2 }}{% endif %}
 			{{ transaction.fiat_currency }}
 		</td>
 		<td>{% if transaction.transaction_type == 'S' %}
