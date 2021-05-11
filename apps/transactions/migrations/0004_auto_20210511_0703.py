@@ -4,7 +4,7 @@ from django.db import migrations
 
 def separate_fees(apps, schema_editor):
 
-    Person = apps.get_model('transactions', 'Transaction')
+    Transaction = apps.get_model('transactions', 'Transaction')
     for tr in Transaction.objects.all():
         if tr.amount_before_fee > 0:
             tr.crypto_fee = tr.amount_before_fee - tr.amount_after_fee
