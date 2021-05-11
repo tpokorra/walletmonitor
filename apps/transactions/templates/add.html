@@ -29,6 +29,13 @@
 	</div>
 
 	<div class="form-group row">
+	<label class="col-sm-2 col-form-label">Transaction Type:</label>
+	<div class="col-sm-4">
+	  {{ form.transaction_type }}
+	</div>
+	</div>
+
+	<div class="form-group row">
 	<label class="col-sm-2 col-form-label">Trade ID:</label>
 	<div class="col-sm-4">
 	  {{ form.trade_id }}
@@ -43,16 +50,16 @@
 	</div>
 
 	<div class="form-group row">
-	<label class="col-sm-2 col-form-label">Amount before fee:</label>
+	<label class="col-sm-2 col-form-label">Crypto Amount:</label>
 	<div class="col-sm-4">
-	  {{ form.amount_before_fee }}
+	  {{ form.crypto_amount }}
 	</div>
 	</div>
 
 	<div class="form-group row">
-	<label class="col-sm-2 col-form-label">Amount after fee:</label>
+	<label class="col-sm-2 col-form-label">Crypto fee:</label>
 	<div class="col-sm-4">
-	  {{ form.amount_after_fee }}
+	  {{ form.crypto_fee }}
 	</div>
 	</div>
 
@@ -73,7 +80,14 @@
 	<div class="form-group row">
 	<label class="col-sm-2 col-form-label">Fiat Amount:</label>
 	<div class="col-sm-4">
-	  {{ form.amount }}
+	  {{ form.fiat_amount }}
+	</div>
+	</div>
+
+	<div class="form-group row">
+	<label class="col-sm-2 col-form-label">Fiat Fee:</label>
+	<div class="col-sm-4">
+	  {{ form.fiat_fee }}
 	</div>
 	</div>
 
