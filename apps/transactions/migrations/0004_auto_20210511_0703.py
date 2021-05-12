@@ -20,6 +20,8 @@ def separate_fees(apps, schema_editor):
             tr.transaction_type = 'T'
 
         tr.fiat_amount = tr.amount
+        if tr.fiat_amount < 0:
+            tr.fiat_amount = -1 * tr.fiat_amount
         tr.fiat_fee = 0
 
         tr.save()
