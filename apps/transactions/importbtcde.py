@@ -18,7 +18,7 @@ class ImportBtcDe:
           break
       for trade in trades:
 
-        # TODO: check if this trade_id does not exist in the database for this user
+        # check if this trade_id does not exist in the database for this user
         with connection.cursor() as cursor:
           sql = """SELECT trade_id FROM `transaction` WHERE trade_id=%s and owner_id=%s"""
           cursor.execute(sql, [trade['trade_id'], Owner.id])
@@ -37,14 +37,18 @@ class ImportBtcDe:
           if trade['trading_pair'].upper().endswith(f):
             t.fiat_currency = f
         t.owner = Owner
-        t.amount_before_fee = Decimal(trade['amount'])
-        t.amount_after_fee = Decimal(trade['amount']) - Decimal(trade['fee_currency'])
-        t.amount = Decimal(trade['volume'])
         if trade['type'] == 'sell':
-            t.amount -= Decimal(trade['fee_eur'])
-            t.amount_before_fee *= -1
-            t.amount_after_fee *= -1
-            t.amount *= -1
+            t.crypto_amount = Decimal(trade['amount_currency_to_trade'])-Decimal(trade['fee_currency_to_trade'])
+        else:
+            t.crypto_amount = Decimal(trade['amount_currency_to_trade'])
+        t.crypto_fee = Decimal(trade['fee_currency_to_trade'])
+        t.fiat_amount = Decimal(trade['volume_currency_to_pay'])
+        t.fiat_fee = Decimal(trade['fee_currency_to_pay'])
+        if trade['type'] == 'sell':
+            t.transaction_type = 'S'
+        else:
+            t.transaction_type = 'B'
+        t.description = 'Bitcoin.de Trade'
         t.exchange_rate = trade['price']
         t.date_valid = trade['created_at']
         t.save()

@@ -4,6 +4,8 @@ register = template.Library()
 
 @register.filter
 def formatcurrency(value):
+    if not value:
+        return "0.00"
     if value > 100:
         return "%0.0f" % (value,)
     if value < 0.01:

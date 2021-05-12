@@ -64,7 +64,7 @@
               We have sold {{ c.crypto }} for {{ c.sold|floatformat:2 }} EUR<br/>
               {% endif %}
               {% if c.amount_kept %}
-              Current value of our {{ c.amount_kept|formatcurrency }} {{ c.crypto }} is {{ c.current_value|floatformat:2 }} EUR<br/>
+              Current value of our <span title="{{ c.amount_kept }} {{ c.crypto }}">{{ c.amount_kept|formatcurrency }} {{ c.crypto }}</span> is {{ c.current_value|floatformat:2 }} EUR<br/>
               {% endif %}
               {% if c.bought_recently %}
               We have bought within the last 12 months:  {{ c.bought_recently|formatcurrency }} {{ c.crypto }}<br/>

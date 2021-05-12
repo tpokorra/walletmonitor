@@ -20,15 +20,26 @@
 	</thead>
 	<tbody>
 {% for transaction in transactions %}
+    {% if transaction.description and transaction.description != '' %}
+    <tr>
+        <td colspan="5">{{ transaction.description }}:</td>
+    </tr>
+    {% endif %}
 	<tr>
 		<td>{{ transaction.date_valid }}</td>
-		<td>{{ transaction.amount_before_fee|floatformat:3 }} {{ transaction.crypto_currency }}</td>
-		<td>{{ transaction.amount|formatcurrency }} {{ transaction.fiat_currency }}</td>
-		<td>{% if transaction.amount < 0 %}
+		<td>{{ transaction.crypto_amount|floatformat:3 }}
+			{% if transaction.crypto_fee and transaction.crypto_fee > 0 %}Fee: {{ transaction.crypto_fee|floatformat:3 }}{% endif %}
+			{{ transaction.crypto_currency }}
+		</td>
+		<td>{{ transaction.fiat_amount|formatcurrency }}
+			{% if transaction.fiat_fee and transaction.fiat_fee > 0 %}Fee: {{ transaction.fiat_fee|floatformat:2 }}{% endif %}
+			{{ transaction.fiat_currency }}
+		</td>
+		<td>{% if transaction.transaction_type == 'S' %}
 			{{ transaction.exchange_rate|formatcurrency }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
 			{% endif %}
 		</td>
-		<td>{% if transaction.amount > 0 %}
+		<td>{% if transaction.transaction_type == 'B' %}
 			{{ transaction.exchange_rate|formatcurrency }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
 			{% endif %}
 		</td>
