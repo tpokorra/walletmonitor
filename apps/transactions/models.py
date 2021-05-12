@@ -40,6 +40,7 @@ class Transaction(models.Model):
     fiat_fee = NonscientificDecimalField(max_digits=24, decimal_places=10, null=True, blank=True)
     date_valid = models.DateTimeField('date transfered')
     transaction_type = models.CharField(max_length=1, choices=TRANSACTION_TYPES, default='B')
+    description = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:  
         db_table = "transaction"

@@ -20,6 +20,11 @@
 	</thead>
 	<tbody>
 {% for transaction in transactions %}
+    {% if transaction.description and transaction.description != '' %}
+    <tr>
+        <td colspan="5">{{ transaction.description }}:</td>
+    </tr>
+    {% endif %}
 	<tr>
 		<td>{{ transaction.date_valid }}</td>
 		<td>{{ transaction.crypto_amount|floatformat:3 }}

@@ -37,7 +37,7 @@ class ImportBtcDe:
           if trade['trading_pair'].upper().endswith(f):
             t.fiat_currency = f
         t.owner = Owner
-        t.crypto_amount = Decimal(trade['amount_currency_to_trade'])
+        t.crypto_amount = Decimal(trade['amount_currency_to_trade'])-Decimal(trade['amount_currency_to_trade'])
         t.crypto_fee = Decimal(trade['fee_currency_to_trade'])
         t.fiat_amount = Decimal(trade['volume_currency_to_pay'])
         t.fiat_fee = Decimal(trade['fee_currency_to_pay'])
