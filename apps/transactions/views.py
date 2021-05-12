@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Value
 from apps.transactions.forms import TransactionForm
 from apps.transactions.forms import ImportForm
 from apps.transactions.models import Transaction
@@ -43,9 +44,20 @@ def importbtcde(request):
 @login_required
 def show(request):
     if 'crypto' in request.GET:
-        transactions = Transaction.objects.filter(owner=request.user, crypto_currency=request.GET['crypto']).order_by('-date_valid')
+        transactions = Transaction.objects.filter(owner=request.user, crypto_currency=request.GET['crypto']).order_by('-date_valid').annotate(crypto_total=Value(0.0), fiat_total=Value(0.0))
     else:
-        transactions = Transaction.objects.filter(owner=request.user).order_by('-date_valid')
+        transactions = Transaction.objects.filter(owner=request.user).order_by('-date_valid').annotate(crypto_total=Value(0.0), fiat_total=Value(0.0))
+    for tr in transactions:
+        tr.crypto_total = 0.0
+        if tr.crypto_amount:
+            tr.crypto_total += float(tr.crypto_amount)
+        if tr.crypto_fee:
+            tr.crypto_total += float(tr.crypto_fee)
+        tr.fiat_total = 0.0
+        if tr.fiat_amount:
+            tr.fiat_total += float(tr.fiat_amount)
+        if tr.fiat_fee:
+            tr.fiat_total += float(tr.fiat_fee)
     return render(request,"show.html",{'transactions':transactions})
 
 @login_required
