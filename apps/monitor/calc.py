@@ -90,8 +90,9 @@ class Calc:
         sql = """SELECT SUM(crypto_fee) as crypto_fee, SUM(fiat_fee) as fiat_fee FROM `transaction` WHERE crypto_currency=%s and owner_id=%s"""
         cursor.execute(sql, [crypto, userid])
         fees = cursor.fetchone()
-        if fees[0]:
+        if fees[1]:
           total_investment -= Decimal(fees[1])
+        if fees[0]:
           amount_kept -= Decimal(fees[0])
 
     rateEUR = ExchangeRate.objects.filter(crypto_currency=crypto, fiat_currency='EUR').order_by('-datetime_valid').first()
