@@ -5,6 +5,7 @@ from io import StringIO
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
 import matplotlib.ticker as plticker
+import matplotlib.dates as mdates
 from django.http import HttpResponse
 
 class Graph:
@@ -45,10 +46,20 @@ class Graph:
         ax.plot(x, y, color='green', linestyle='dashed', linewidth = 2,
                  marker='o', markerfacecolor='blue', markersize=2)
 
-        loc = plticker.MultipleLocator(base=(len(x)/4.0))
-        #ax.xaxis.set_major_locator(loc)
+        if int(DayDiff) <= 30:
+            hours = mdates.DayLocator(interval = 6)
+        elif int(DayDiff) <= 180:
+            hours = mdates.DayLocator(interval = 30)
+        elif int(DayDiff) <= 360:
+            hours = mdates.DayLocator(interval = int((int(DayDiff)/6)))
+        else:
+            hours = mdates.DayLocator(interval = 360)
 
-        ax.set_xlabel("time")
+        h_fmt = mdates.DateFormatter('%b %d\n%Y')
+        ax.xaxis.set_major_locator(hours)
+        ax.xaxis.set_major_formatter(h_fmt)
+
+        #ax.set_xlabel("time")
         ax.set_ylabel(Fiat)
         ax.set_title(('%s in %s' % (Crypto, Fiat)))
 
@@ -83,10 +94,18 @@ class Graph:
         ax.plot(x, y, color='green', linestyle='dashed', linewidth = 2,
                  marker='o', markerfacecolor='blue', markersize=2)
 
-        loc = plticker.MultipleLocator(base=(len(x)/5.0))
-        #ax.xaxis.set_major_locator(loc)
+        if int(HourDiff) <= 48:
+            hours = mdates.HourLocator(interval = 6)
+            h_fmt = mdates.DateFormatter('%b %d\n%H:%M')
+        else:
+            hours = mdates.HourLocator(interval = 24)
+            h_fmt = mdates.DateFormatter('%b %d\n%H:%M')
 
-        ax.set_xlabel("time")
+        ax.xaxis.set_major_locator(hours)
+        ax.xaxis.set_major_formatter(h_fmt)
+
+        #fig.subplots_adjust(bottom=0.2)
+        #ax.set_xlabel("time")
         ax.set_ylabel(Fiat)
         ax.set_title(('%s in %s' % (Crypto, Fiat)))
 
