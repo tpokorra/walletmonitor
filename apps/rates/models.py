@@ -8,3 +8,7 @@ class ExchangeRate(models.Model):
     datetime_valid = models.DateTimeField('datetime valid')
     class Meta:  
         db_table = "exchangerate"
+
+        indexes = [
+            models.Index(fields=['crypto_currency', 'fiat_currency', 'datetime_valid',]),
+        ]

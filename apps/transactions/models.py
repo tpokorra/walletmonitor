@@ -44,3 +44,7 @@ class Transaction(models.Model):
 
     class Meta:  
         db_table = "transaction"
+
+        indexes = [
+            models.Index(fields=['crypto_currency', 'owner', 'transaction_type',]),
+        ]
