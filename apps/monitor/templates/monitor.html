@@ -118,8 +118,47 @@
 
 {% endfor %}
 
-<br/><br/><br/>
+  <input type="checkbox" id="accWALLET" />
+  <label for="accWALLET">
+    My Wallet
+    {% if wallet.rateEUR %}{{wallet.rateEUR|formatcurrency}} EUR{% endif %}
+  </label>
+  <div class="content">
+      <ul class="tab-nav" id="tabnavWallet">
+          <li>
+            <a class="button" href="#w1Wallet">1 week</a>
+          </li>
+          <li>
+            <a class="button active" href="#m1Wallet">1 month</a>
+          </li>
+          <li>
+            <a class="button" href="#m6Wallet">6 months</a>
+          </li>
+          <li>
+            <a class="button" href="#y1Wallet">1 year</a>
+          </li>
+          <li>
+            <a class="button" href="#y3Wallet">3 years</a>
+          </li>
+          <li>
+            <a class="button" href="#y5Wallet">5 years</a>
+          </li>
+          <li>
+            <a class="button" href="#y10Wallet">10 years</a>
+          </li>
+      </ul>
+      <div class="tab-content" id="tabcontentWallet">
 
+          {% for g in wallet.graphs %}
+          <div class="tab-pane {{g.active}}" id="{{ g.id }}Wallet">
+              <h4>{{ g.label }}</h4>
+              <img src="/graph?crypto=WALLET&fiat=EUR&{{g.period}}" loading="lazy"><br/>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
+
+<br/><br/><br/>
 
 </div>
 {% endblock %}
