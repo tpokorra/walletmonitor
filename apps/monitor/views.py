@@ -25,8 +25,11 @@ def monitor(request):
 
     django_timezone = pytz.timezone(settings.TIME_ZONE)
 
+    wallet = {"rateEUR": current_value, "graphs": calc.GetWalletGraphs(request.user.id)}
+
     return render(request,"monitor.html",
             {'cryptos':cryptos,
+                'wallet': wallet,
                 'total_tax_free': total_tax_free,
                 'total_investment': total_investment,
                 'current_value': current_value,
@@ -42,7 +45,11 @@ def graph(request):
     Crypto = request.GET['crypto']
     Fiat = request.GET['fiat']
 
-    if 'number_of_days' in request.GET:
-        return Graph().graph_days(Crypto, Fiat, request.GET['number_of_days'])
-    if 'number_of_hours' in request.GET:
-        return Graph().graph_hours(Crypto, Fiat, request.GET['number_of_hours'])
+    if Crypto == "WALLET":
+        if 'number_of_days' in request.GET:
+            return Graph().wallet_graph_days(request.user.id, Fiat, request.GET['number_of_days'])
+    else:
+        if 'number_of_days' in request.GET:
+            return Graph().graph_days(Crypto, Fiat, request.GET['number_of_days'])
+        if 'number_of_hours' in request.GET:
+            return Graph().graph_hours(Crypto, Fiat, request.GET['number_of_hours'])

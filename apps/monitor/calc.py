@@ -150,3 +150,16 @@ class Calc:
           total_tax_free += out["value_tax_free"]
 
     return (total_investment, current_value, total_tax_free, rateEUR.rate, rateUSD.rate, last_updated, out)
+
+  def GetWalletGraphs(self, userid):
+    out = {}
+    out["graphs"] = []
+    out["graphs"].append({"id": "w1", "label": "1 week", "period": "number_of_days=7"})
+    out["graphs"].append({"id": "m1", "active": "active", "label": "1 month", "period": "number_of_days=30"})
+    out["graphs"].append({"id": "m6", "label": "6 months", "period": "number_of_days=180"})
+    out["graphs"].append({"id": "y1", "label": "1 year", "period": "number_of_days=365"})
+    out["graphs"].append({"id": "y3", "label": "3 years", "period": "number_of_days=" + str(365*3)})
+    out["graphs"].append({"id": "y5", "label": "5 years", "period": "number_of_days=" + str(365*5)})
+    out["graphs"].append({"id": "y10", "label": "10 years", "period": "number_of_days=" + str(365*10)})
+
+    return (out["graphs"])
