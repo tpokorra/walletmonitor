@@ -47,7 +47,12 @@ def importbtcde(request):
 @login_required
 def show(request):
     if 'crypto' in request.GET:
-        transactions = Transaction.objects.filter(owner=request.user, crypto_currency=request.GET['crypto']).order_by('-date_valid').annotate(crypto_total=Value(0.0), fiat_total=Value(0.0))
+        crypto = request.GET['crypto']
+    else:
+        crypto = None
+
+    if crypto:
+        transactions = Transaction.objects.filter(owner=request.user, crypto_currency=crypto).order_by('-date_valid').annotate(crypto_total=Value(0.0), fiat_total=Value(0.0))
     else:
         transactions = Transaction.objects.filter(owner=request.user).order_by('-date_valid').annotate(crypto_total=Value(0.0), fiat_total=Value(0.0))
     for tr in transactions:
@@ -61,14 +66,19 @@ def show(request):
             tr.fiat_total += float(tr.fiat_amount)
         if tr.fiat_fee:
             tr.fiat_total += float(tr.fiat_fee)
-    return render(request,"show.html",{'transactions':transactions})
+    return render(request,"show.html",{'transactions':transactions, 'crypto': crypto})
 
 
 @login_required
 def export(request):
     if 'crypto' in request.GET:
-        filename="transactions-"+request.GET['crypto']+".xls"
-        transactions = Transaction.objects.filter(owner=request.user, crypto_currency=request.GET['crypto']).order_by('-date_valid')
+        crypto = request.GET['crypto']
+    else:
+        crypto = None
+
+    if crypto:
+        filename="transactions-"+crypto+".xls"
+        transactions = Transaction.objects.filter(owner=request.user, crypto_currency=crypto).order_by('-date_valid')
     else:
         transactions = Transaction.objects.filter(owner=request.user).order_by('-date_valid')
         filename="transactions.xls"
