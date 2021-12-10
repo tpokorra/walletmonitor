@@ -30,6 +30,7 @@ urlpatterns = [
 	path('graph/', monitor_views.graph),
 	path('transactions/add', tr_views.add),
 	path('transactions/import', tr_views.importbtcde),
+	path('transactions/export', tr_views.export),
 	path('transactions/show', tr_views.show),
 	path('transactions/edit/<int:id>', tr_views.edit),
 	path('transactions/update/<int:id>', tr_views.update),

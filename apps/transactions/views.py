@@ -6,6 +6,9 @@ from apps.transactions.forms import ImportForm
 from apps.transactions.models import Transaction
 from apps.transactions.importbtcde import ImportBtcDe
 import socket
+import xlwt
+from django.http import HttpResponse
+
 
 @login_required
 def add(request):
@@ -59,6 +62,61 @@ def show(request):
         if tr.fiat_fee:
             tr.fiat_total += float(tr.fiat_fee)
     return render(request,"show.html",{'transactions':transactions})
+
+
+@login_required
+def export(request):
+    if 'crypto' in request.GET:
+        filename="transactions-"+request.GET['crypto']+".xls"
+        transactions = Transaction.objects.filter(owner=request.user, crypto_currency=request.GET['crypto']).order_by('-date_valid')
+    else:
+        transactions = Transaction.objects.filter(owner=request.user).order_by('-date_valid')
+        filename="transactions.xls"
+
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="'+filename+'"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Transactions')
+
+    # header
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Date', 'Type', 'Crypto Amount', 'Crypto Fee', 'Crypto Currency', 'Fiat Amount', 'Fiat Fee', 'Fiat Currency', 'Rate', 'Description', ]
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # body
+    font_style = xlwt.XFStyle()
+    date_format = xlwt.XFStyle()
+    date_format.num_format_str = 'dd/mm/yyyy'
+
+    for row in transactions:
+        row_num += 1
+        ws.write(row_num, 0, row.date_valid.replace(tzinfo=None), date_format)
+        ws.write(row_num, 1, row.transaction_type, font_style)
+        if row.transaction_type == 'B':
+            ws.write(row_num, 2, row.crypto_amount, font_style)
+        elif row.crypto_amount:
+            ws.write(row_num, 2, -1*row.crypto_amount, font_style)
+        if row.crypto_fee:
+            ws.write(row_num, 3, -1*row.crypto_fee, font_style)
+        ws.write(row_num, 4, row.crypto_currency, font_style)
+        if row.transaction_type == 'B' and row.fiat_amount:
+            ws.write(row_num, 5, -1*row.fiat_amount, font_style)
+        else:
+            ws.write(row_num, 5, row.fiat_amount, font_style)
+        if row.fiat_fee:
+            ws.write(row_num, 6, -1*row.fiat_fee, font_style)
+        ws.write(row_num, 7, row.fiat_currency, font_style)
+        ws.write(row_num, 8, row.exchange_rate, font_style)
+        ws.write(row_num, 9, row.description, font_style)
+
+    wb.save(response)
+    return response
+
 
 @login_required
 def edit(request, id):
