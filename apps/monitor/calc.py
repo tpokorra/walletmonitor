@@ -14,7 +14,7 @@ class Calc:
         endDate = startDate + datetime.timedelta(days=1)
         cursor.execute(sql, [Crypto, Fiat, startDate, endDate])
         rateMinusXDay = cursor.fetchone()
-        if rateMinusXDay:
+        if rateMinusXDay and Decimal(rateMinusXDay[0]) > 0:
             return {"dateRelative": "%s days ago" % (DayDiff,), "date" : rateMinusXDay[1], "rateEUR": rateMinusXDay[0],
                 "diffPercentage": (CurrentRate.rate-Decimal(rateMinusXDay[0]))/Decimal(rateMinusXDay[0])*100, "rateUSD": None}
     return None
