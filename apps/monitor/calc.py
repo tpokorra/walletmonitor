@@ -49,11 +49,14 @@ class Calc:
                   ORDER BY rate ASC LIMIT 1"""
         cursor.execute(sql, [Crypto, Fiat, startDate, endDate])
         minRate = cursor.fetchone()
+        diffPercentage = -1
+        if startRate[1] > 0:
+            diffPercentage = (Decimal(endRate[1])-Decimal(startRate[1]))/Decimal(startRate[1])*100
         return {"startdate": startRate[0], "startvalue": startRate[1],
                 "curdate": endRate[0], "curvalue": endRate[1],
                 "mindate": minRate[0], "minvalue": minRate[1],
                 "maxdate": maxRate[0], "maxvalue": maxRate[1],
-                "diffPercentage": (Decimal(endRate[1])-Decimal(startRate[1]))/Decimal(startRate[1])*100}
+                "diffPercentage": diffPercentage}
     return None
 
 
