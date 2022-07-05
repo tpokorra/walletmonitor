@@ -5,6 +5,7 @@ from apps.transactions.forms import TransactionForm
 from apps.transactions.forms import ImportForm
 from apps.transactions.models import Transaction
 from apps.transactions.importbtcde import ImportBtcDe
+import datetime
 import socket
 import xlwt
 from django.http import HttpResponse
@@ -66,7 +67,9 @@ def show(request):
             tr.fiat_total += float(tr.fiat_amount)
         if tr.fiat_fee:
             tr.fiat_total += float(tr.fiat_fee)
-    return render(request,"show.html",{'transactions':transactions, 'crypto': crypto})
+    return render(request,"show.html",{'transactions':transactions,
+        'tax_limit_day': datetime.datetime.now() - datetime.timedelta(days=1*365),
+        'crypto': crypto})
 
 
 @login_required

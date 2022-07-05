@@ -27,7 +27,7 @@
         <td colspan="5">{{ transaction.description }}:</td>
     </tr>
     {% endif %}
-	<tr>
+    <tr {% if transaction.date_valid|date:"Y-m-d" < tax_limit_day|date:"Y-m-d" %}class="green"{% endif %}>
         <td>{{ transaction.date_valid }}</td>
         <td><span title="{% if transaction.crypto_fee and transaction.crypto_fee > 0 %}Fee: {{ transaction.crypto_fee }}{% else %}{{ transaction.crypto_total }}{% endif %}">
             {{ transaction.crypto_total|floatformat:3 }}
