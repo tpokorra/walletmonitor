@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.http import HttpResponse
 import pytz
 from apps.transactions.models import Transaction
 from apps.rates.models import ExchangeRate
@@ -45,11 +46,15 @@ def graph(request):
     Crypto = request.GET['crypto']
     Fiat = request.GET['fiat']
 
-    if Crypto == "WALLET":
-        if 'number_of_days' in request.GET:
-            return Graph().wallet_graph_days(request.user.id, Fiat, request.GET['number_of_days'])
-    else:
-        if 'number_of_days' in request.GET:
-            return Graph().graph_days(Crypto, Fiat, request.GET['number_of_days'])
-        if 'number_of_hours' in request.GET:
-            return Graph().graph_hours(Crypto, Fiat, request.GET['number_of_hours'])
+    try:
+        if Crypto == "WALLET":
+            if 'number_of_days' in request.GET:
+                return Graph().wallet_graph_days(request.user.id, Fiat, request.GET['number_of_days'])
+        else:
+            if 'number_of_days' in request.GET:
+                return Graph().graph_days(Crypto, Fiat, request.GET['number_of_days'])
+            if 'number_of_hours' in request.GET:
+                return Graph().graph_hours(Crypto, Fiat, request.GET['number_of_hours'])
+    except:
+        response = HttpResponse(content_type = 'image/png')
+        return response
