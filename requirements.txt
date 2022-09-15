@@ -2,5 +2,6 @@ django
 django-registration
 pytz
 matplotlib
+mysqlclient
 btcde
 xlwt
