@@ -1,4 +1,4 @@
-django
+django==3.2.17
 django-registration
 pytz
 matplotlib
