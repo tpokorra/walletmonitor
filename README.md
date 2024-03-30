@@ -12,7 +12,4 @@ This application is written in Python using Django.
 Install
 =======
 
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install wheel
-    pip install -r requirements.txt
+    pipenv install

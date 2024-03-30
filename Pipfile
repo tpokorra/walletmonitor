@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "~=4.2"
+django-registration = "*"
+pytz = "*"
+matplotlib = "*"
+mysqlclient = "*"
+btcde = "*"
+xlwt = "*"
+
+[dev-packages]
