@@ -3,6 +3,7 @@ from apps.transactions.models import Transaction
 from apps.rates.models import ExchangeRate
 from decimal import Decimal
 import datetime
+from django.utils import timezone
 
 class Calc:
   def ShowDiffRate(self, DayDiff, CurrentRate, Crypto, Fiat):
@@ -135,7 +136,8 @@ class Calc:
     amount_within_past_year = 0
     with connection.cursor() as cursor:
         sql = """SELECT SUM(crypto_amount) as amount FROM `transaction` WHERE transaction_type='B' and crypto_currency=%s and owner_id=%s and date_valid>%s"""
-        cursor.execute(sql, [crypto, userid, datetime.datetime.now() - datetime.timedelta(days=365)])
+        date_valid = timezone.make_aware(datetime.datetime.now() - datetime.timedelta(days=365), timezone=timezone.get_current_timezone())
+        cursor.execute(sql, [crypto, userid, date_valid])
         bought = cursor.fetchone()
         out["bought_recently"] = None
         if bought[0]:

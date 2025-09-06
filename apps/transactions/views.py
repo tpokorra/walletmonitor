@@ -6,6 +6,7 @@ from apps.transactions.forms import ImportForm
 from apps.transactions.models import Transaction
 from apps.transactions.importbtcde import ImportBtcDe
 import datetime
+from django.utils import timezone
 import socket
 import xlwt
 from django.http import HttpResponse
@@ -67,8 +68,9 @@ def show(request):
             tr.fiat_total += float(tr.fiat_amount)
         if tr.fiat_fee:
             tr.fiat_total += float(tr.fiat_fee)
+    tax_limit_day = timezone.make_aware(datetime.datetime.now() - datetime.timedelta(days=1*365), timezone=timezone.get_current_timezone())
     return render(request,"show.html",{'transactions':transactions,
-        'tax_limit_day': datetime.datetime.now() - datetime.timedelta(days=1*365),
+        'tax_limit_day': tax_limit_day,
         'crypto': crypto})
 
 

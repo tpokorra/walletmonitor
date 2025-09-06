@@ -1,6 +1,7 @@
 from django import forms  
 import sys
 import datetime
+from django.utils import timezone
 from apps.transactions.models import Transaction
 from apps.rates.models import ExchangeRate
 
@@ -19,7 +20,8 @@ class TransactionForm(forms.ModelForm):
 
         # do not run this code in initial migration, because the database has not been built yet
         if not "migrate" in sys.argv:
-            exchangerates = ExchangeRate.objects.filter(datetime_valid__gt = datetime.datetime.today() - datetime.timedelta(days=7))
+            datetime_valid = timezone.make_aware(datetime.datetime.today() - datetime.timedelta(days=7), timezone=timezone.get_current_timezone())
+            exchangerates = ExchangeRate.objects.filter(datetime_valid__gt = datetime_valid)
             crypto_currencies = [(x, x) for x in sorted({ex.crypto_currency for ex in exchangerates})]
             fiat_currencies = [(x, x) for x in sorted({ex.fiat_currency for ex in exchangerates})]
 
