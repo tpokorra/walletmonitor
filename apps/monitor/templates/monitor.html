@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load filter %}
+{% load monitor_filter %}
 
 {% block content %}
 <div class="form-box">
@@ -17,8 +17,8 @@
   <input type="checkbox" id="acc{{ c.crypto }}" />
   <label for="acc{{ c.crypto }}">
     {{ c.crypto }}
-    {% if c.rateEUR %}{{c.rateEUR|formatcurrency}} EUR{% endif %}
-    {% if c.rateUSD %}{{c.rateUSD|formatcurrency}} USD{% endif %}
+    {% if c.rateEUR %}{{c.rateEUR|monitorformatcurrency}} EUR{% endif %}
+    {% if c.rateUSD %}{{c.rateUSD|monitorformatcurrency}} USD{% endif %}
   </label>
 
   <div class="content">
@@ -67,13 +67,13 @@
               We have sold {{ c.crypto }} for {{ c.sold|floatformat:2 }} EUR<br/>
               {% endif %}
               {% if c.amount_kept %}
-              Current value of our <span title="{{ c.amount_kept }} {{ c.crypto }}">{{ c.amount_kept|formatcurrency }} {{ c.crypto }}</span> is {{ c.current_value|floatformat:2 }} EUR<br/>
+              Current value of our <span title="{{ c.amount_kept }} {{ c.crypto }}">{{ c.amount_kept|monitorformatcurrency }} {{ c.crypto }}</span> is {{ c.current_value|floatformat:2 }} EUR<br/>
               {% endif %}
               {% if c.bought_recently %}
-              We have bought within the last 12 months:  {{ c.bought_recently|formatcurrency }} {{ c.crypto }}<br/>
+              We have bought within the last 12 months:  {{ c.bought_recently|monitorformatcurrency }} {{ c.crypto }}<br/>
               {% endif %}
               {% if c.bought_tax_free %}
-              We can sell without paying taxes: {{ c.bought_tax_free|formatcurrency }} {{ c.crypto }} for {{ c.value_tax_free|floatformat:2 }} EUR<br/>
+              We can sell without paying taxes: {{ c.bought_tax_free|monitorformatcurrency }} {{ c.crypto }} for {{ c.value_tax_free|floatformat:2 }} EUR<br/>
               {% endif %}
 
               <br/><a href="/transactions/show?crypto={{ c.crypto }}">My transactions</a><br/>
@@ -93,7 +93,7 @@
                 <tr>
                     <td>{{ r.dateRelative }}</td>
                     <td>{{ r.date|date:'Y-m-d' }}</td>
-                    <td>{{ r.rateEUR|formatcurrency }} EUR/{{ c.crypto }}</td>
+                    <td>{{ r.rateEUR|monitorformatcurrency }} EUR/{{ c.crypto }}</td>
                     <td>{% if r.diffPercentage %}
                         {{ r.diffPercentage|floatformat:1 }}%
                         {% endif %}
@@ -107,11 +107,11 @@
           <div class="tab-pane {{g.active}}" id="{{ g.id }}{{ c.crypto }}">
               <h4>{{ g.label }}</h4>
               <img src="/graph?crypto={{ c.crypto }}&fiat=EUR&{{g.period}}" loading="lazy"><br/>
-              Start: {{ g.startdate }} {{ g.startvalue|formatcurrency }} EUR<br/>
-              Now: {{ g.curdate }} {{ g.curvalue|formatcurrency }} EUR<br/>
+              Start: {{ g.startdate }} {{ g.startvalue|monitorformatcurrency }} EUR<br/>
+              Now: {{ g.curdate }} {{ g.curvalue|monitorformatcurrency }} EUR<br/>
               Diff: {{ g.diffPercentage|floatformat:1 }} %<br/>
-              Min: {{ g.mindate }} {{ g.minvalue|formatcurrency }} EUR<br/>
-              Max: {{ g.maxdate }} {{ g.maxvalue|formatcurrency }} EUR<br/>
+              Min: {{ g.mindate }} {{ g.minvalue|monitorformatcurrency }} EUR<br/>
+              Max: {{ g.maxdate }} {{ g.maxvalue|monitorformatcurrency }} EUR<br/>
           </div>
           {% endfor %}
       </div>
@@ -124,7 +124,7 @@
   <input type="checkbox" id="accWALLET" />
   <label for="accWALLET">
     My Wallet
-    {% if wallet.rateEUR %}{{wallet.rateEUR|formatcurrency}} EUR{% endif %}
+    {% if wallet.rateEUR %}{{wallet.rateEUR|monitorformatcurrency}} EUR{% endif %}
   </label>
   <div class="content">
       <ul class="tab-nav" id="tabnavWallet">

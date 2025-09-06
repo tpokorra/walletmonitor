@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 
 @register.filter
-def formatcurrency(value):
+def monitorformatcurrency(value):
     if not value:
         return "0.00"
     if value > 100:

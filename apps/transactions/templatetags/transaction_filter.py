@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 
 @register.filter
-def formatcurrency(value):
+def transactionformatcurrency(value):
     if value > 100:
         return "%0.0f" % (value,)
     if value < 0.01:

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% load filter %}
+{% load transaction_filter %}
 
 {% block content %}
 <div class="form-box">
@@ -35,16 +35,16 @@
             </span>
         </td>
         <td><span title="{% if transaction.fiat_fee and transaction.fiat_fee > 0 %}Fee: {{ transaction.fiat_fee }}{% else %}{{ transaction.fiat_total }}{% endif %}">
-                {{ transaction.fiat_total|formatcurrency }}
+                {{ transaction.fiat_total|transactionformatcurrency }}
                 {{ transaction.fiat_currency }}
             </span>
         </td>
 		<td>{% if transaction.transaction_type == 'S' %}
-			{{ transaction.exchange_rate|formatcurrency }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
+			{{ transaction.exchange_rate|transactionformatcurrency }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
 			{% endif %}
 		</td>
 		<td>{% if transaction.transaction_type == 'B' %}
-			{{ transaction.exchange_rate|formatcurrency }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
+			{{ transaction.exchange_rate|transactionformatcurrency }} {{ transaction.crypto_currency }}/{{ transaction.fiat_currency }}
 			{% endif %}
 		</td>
 		<td>
