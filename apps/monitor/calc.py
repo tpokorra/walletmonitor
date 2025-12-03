@@ -149,10 +149,53 @@ class Calc:
           amount_available_to_sell = 0
         out["bought_tax_free"] = None
         out["value_tax_free"] = None
+        out["avg_price_tax_free"] = None
         if rateEUR:
           out["bought_tax_free"] = amount_available_to_sell
           out["value_tax_free"] = amount_available_to_sell * rateEUR.rate
           total_tax_free += out["value_tax_free"]
+
+
+    # A: 4 gekauft zum Preis von 5
+    # B: 3 verkauft
+    # C: 2 gekauft zum Preis von 7
+    # D: 2 verkauft
+    # E: 5 gekauft zum Preis von 10.
+    # Durchschnitts-Einkaufspreis: (1*7 + 5*10) / (1+5) = 9.5
+    with connection.cursor() as cursor:
+        tx = []
+        sql = """SELECT crypto_amount, crypto_fee, exchange_rate, transaction_type, date_valid FROM `transaction` WHERE crypto_currency=%s and owner_id=%s and (date_valid<=%s OR transaction_type <> 'B') ORDER BY date_valid ASC"""
+        date_valid = timezone.make_aware(datetime.datetime.now() - datetime.timedelta(days=365), timezone=timezone.get_current_timezone())
+        cursor.execute(sql, [crypto, userid, date_valid])
+        records = cursor.fetchall()
+        for row in records:
+            if row[3] == 'B':
+                amount = row[0]
+                if row[1] is not None:
+                    amount -= row[1]
+                tx.append([amount, row[2], row[3], row[4]])
+            elif row[3] in ('S','T'):
+                sold = 0
+                if row[0] is not None:
+                    sold += row[0]
+                if row[1] is not None:
+                    sold += row[1]
+                for b in tx:
+                    if b[0] > 0 and sold > 0:
+                        print("  ", b)
+                        if sold <= b[0]:
+                          b[0] -= sold
+                          sold = 0
+                        if sold > b[0]:
+                          sold -= b[0]
+                          b[0] = 0
+        total_fiat = 0
+        total_crypto = 0
+        for b in tx:
+            total_crypto += b[0]
+            total_fiat += b[0]*b[1]
+        if total_fiat != 0:
+            out["avg_price_tax_free"] = round(total_fiat / total_crypto, 2)
 
     return (total_investment, current_value, total_tax_free, rateEUR.rate, rateUSD.rate, last_updated, out)
 

@@ -73,7 +73,7 @@
               We have bought within the last 12 months:  {{ c.bought_recently|monitorformatcurrency }} {{ c.crypto }}<br/>
               {% endif %}
               {% if c.bought_tax_free %}
-              We can sell without paying taxes: {{ c.bought_tax_free|monitorformatcurrency }} {{ c.crypto }} for {{ c.value_tax_free|floatformat:2 }} EUR<br/>
+              We can sell without paying taxes: {{ c.bought_tax_free|monitorformatcurrency }} {{ c.crypto }} for {{ c.value_tax_free|floatformat:2 }} EUR (bought at average price: {{ c.avg_price_tax_free }} EUR)<br/>
               {% endif %}
 
               <br/><a href="/transactions/show?crypto={{ c.crypto }}">My transactions</a><br/>
